@@ -158,12 +158,8 @@ const Form = () => {
 
       setMessages((msgs) => [...msgs, { role: "AI", text: data.assistant }]);
 
-      if (data.maybeGuess) {
-        setCandidate(data.maybeGuess);
-      }
-
       if (data.assistant.toLowerCase().includes("success")) {
-        acceptCandidate();
+        acceptCandidate(data.confirmedGuess);
       }
     } catch (err: unknown) {
       if (err instanceof DOMException && err.name === "AbortError") {
@@ -174,9 +170,10 @@ const Form = () => {
     }
   }
 
-  const acceptCandidate = () => {
-    if (candidate && dateInputRef.current) {
-      dateInputRef.current.value = candidate;
+  const acceptCandidate = (guess: string) => {
+    if (dateInputRef.current) {
+      setCandidate(guess);
+      dateInputRef.current.value = guess;
     }
     cancelDialog();
   };

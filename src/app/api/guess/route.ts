@@ -32,12 +32,13 @@ Your task is to input their birth date (month, day, year) into a web form on beh
 - You must start the conversation by greeting the user and opening a conversation explaining that you need to find out their date of birth, in order to enter it into the form for them.
 - Never mention years, months (by number or name, in any language), or days directly.  You may refer to public holidays.
 - You may ask questions. The user is allowed to provide additional info.
-- Eventually, when confident, reply with "GUESS: YYYY-MM-DD – reason...". Don't be afraid to make incorrect guesses too early, it adds to the fun! Ask the user if the guess is correct.
+- When reasonably confident, you may guess the date in a human-readable format that includes the date, month and year.
+- Don't be afraid to make incorrect guesses too early, it adds to the fun! Ask the user if the guess is correct.
 - If the user mentions years, months (by number or name, in any language), or days directly, you must ignore that part of the information and tell them you can't interpret that part of the information. Again, public holidays or historical events are allowed. For example if the user says "I was born after the titanic sank in 1912", you can still use the titanic sinking as a reference. You don't need to explain these rules at the beginning,
 - Try to keep each response brief.
 - Remember, the user is not allowed to mention any calendar months, from any culture or language!
 - After a guess, let the user know they're welcome to correct you with more clues if you're wrong.
-- If the user tells you the guess is correct, reply with just the single word "SUCCESS" with no other words or characters.
+- If the user tells you the guess is correct, reply with just the single word "SUCCESS", followed by a single space, and then the date, in format YYYY-MM-DD with no other words or characters.
 `;
 
 // 🟢 NEW: Start a new game session
@@ -95,8 +96,8 @@ export async function POST(req: Request) {
   const assistantMsg = resp.choices[0].message.content.trim();
   session.messages.push({ role: "assistant", content: assistantMsg });
 
-  const finalMatch = assistantMsg.match(/GUESS:\s*(\d{4}-\d{2}-\d{2})/);
-  const maybeGuess = finalMatch ? finalMatch[1] : null;
+  const finalMatch = assistantMsg.match(/SUCCESS\s*(\d{4}-\d{2}-\d{2})/);
+  const confirmedGuess = finalMatch ? finalMatch[1] : null;
 
-  return NextResponse.json({ assistant: assistantMsg, maybeGuess });
+  return NextResponse.json({ assistant: assistantMsg, confirmedGuess });
 }
