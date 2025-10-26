@@ -2,18 +2,18 @@ import Form from "@/libs/form/Form";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between bg-zinc-50 font-sans dark:bg-black">
-      <main className="h-fit-content flex w-full max-w-3xl grow flex-col items-center justify-start bg-white px-8 py-8 sm:items-start dark:bg-black">
+    <div className="flex min-h-screen flex-col items-center justify-between bg-zinc-50 font-sans ">
+      <main className="h-fit-content flex w-full max-w-3xl grow flex-col items-center justify-start bg-white px-8 py-8 sm:items-start">
         <div className="flex flex-col justify-center">
-          <h1 className="mb-4 text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+          <h1 className="mb-4 text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-6xl ">
             Da.i.te Slop
           </h1>
-          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl ">
             Welcome to <span className="italic">The DysFuture&trade;</span>,
             where automation is life, and even basic tasks like entering your
             date of birth must be done by LLM.
           </p>
-          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+          <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl ">
             To embrace <span className="italic">The DysFuture&trade;</span>,
             please fill in your details below.
           </p>
@@ -44,7 +44,7 @@ export default function Home() {
           <a
             target="_blank"
             href="https://www.linkedin.com/in/husseinduvigneau/"
-            className="inline-flex items-center text-blue-600 hover:underline dark:text-blue-500"
+            className="inline-flex items-center text-blue-600 hover:underline "
           >
             Hussein Duvigneau
           </a>{" "}
@@ -52,7 +52,7 @@ export default function Home() {
           <a
             target="_blank"
             href="https://badux.lol/"
-            className="inline-flex items-center text-blue-600 hover:underline dark:text-blue-500"
+            className="inline-flex items-center text-blue-600 hover:underline 0"
           >
             Bad UX World Cup
           </a>
