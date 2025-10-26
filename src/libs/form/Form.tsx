@@ -122,6 +122,7 @@ const Form = () => {
     if (!chatInputRef.current) {
       return;
     }
+    chatInputRef.current.focus();
     const response = chatInputRef.current.value;
     if (!sessionId || !response?.trim()) {
       return;
@@ -494,13 +495,13 @@ const Form = () => {
             </div>
           </div>
           <div className="mt-4 flex">
-            <div className="relative w-full">
+            <div className="relative flex w-full flex-row">
               <input
                 type="text"
                 name="response"
                 id="response"
                 ref={chatInputRef}
-                className="rounded-s-gray-100 rounded-s-2 z-20 block w-full rounded-e-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+                className="rounded-s-gray-100 z-20 my-[1px] -mr-[2px] block grow rounded-s-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
                 placeholder="Reply"
                 required
                 autoFocus
@@ -508,7 +509,7 @@ const Form = () => {
               <button
                 type="button"
                 onClick={sendUserMessage}
-                className="absolute end-0 top-0 h-full rounded-e-lg border bg-blue-600 p-2.5 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="h-full rounded-e-lg border bg-blue-600 p-2.5 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
                 Reply
               </button>
