@@ -25,6 +25,7 @@ const Form = () => {
     null,
   );
   const [dateInputError, setDateInputError] = useState<string | null>(null);
+  const [chatDialogOpen, setChatDialogOpen] = useState(false);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -74,6 +75,7 @@ const Form = () => {
       return;
     }
     if (chatDialogRef.current) {
+      setChatDialogOpen(true);
       chatDialogRef.current.showModal();
     }
     if (!gameStarted) {
@@ -180,6 +182,7 @@ const Form = () => {
 
   const closeDialog = () => {
     chatDialogRef.current?.close();
+    setChatDialogOpen(false);
   };
 
   const closeEndDialog = () => {
@@ -190,6 +193,8 @@ const Form = () => {
     chatDialogRef.current?.close();
     endDialogRef.current?.close();
     mainFormRef.current?.reset();
+
+    setChatDialogOpen(false);
   };
 
   useEffect(() => {
@@ -222,6 +227,33 @@ const Form = () => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, autoScroll]);
+
+  // Adjust height dynamically when keyboard appears
+  useEffect(() => {
+    const dialog = chatDialogRef.current;
+    if (!dialog) return;
+
+    const updatePosition = () => {
+      const vv = window.visualViewport;
+      if (!vv) return;
+
+      dialog.style.position = "fixed";
+      dialog.style.left = `${vv.offsetLeft + 15}px`;
+      dialog.style.top = `${vv.offsetTop + 15}px`;
+      dialog.style.width = `${vv.width - 15}px`;
+      dialog.style.height = `${vv.height - 30}px`;
+    };
+
+    updatePosition(); // initial
+
+    window.visualViewport?.addEventListener("resize", updatePosition);
+    window.visualViewport?.addEventListener("scroll", updatePosition);
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", updatePosition);
+      window.visualViewport?.removeEventListener("scroll", updatePosition);
+    };
+  }, [chatDialogOpen]);
 
   return (
     <>
@@ -412,8 +444,14 @@ const Form = () => {
 
       <dialog
         ref={chatDialogRef}
-        className="fixed top-[5vh] bottom-[5vh] left-1/2 h-full max-h-[90dvh] w-[90vw] -translate-x-1/2 rounded-xl bg-white shadow-xl dark:bg-gray-800"
-      >
+        className={`
+        top-[5dvh] bottom-[5vh] left-[5vw] right-[5vw] rounded-xl 
+        fixed inset-0 z-50 m-0 p-0
+       overflow-hidden
+        bg-white text-gray-900 shadow-xl
+        duration-200
+        md:max-w-3xl md:mx-auto md:my-4 md:rounded-2xl
+      `}      >
         <button
           type="button"
           onClick={cancelDialog}
@@ -487,7 +525,7 @@ const Form = () => {
 
       <dialog
         ref={endDialogRef}
-        className="wrap-none fixed top-1/2 left-1/2 h-fit max-h-[30vh] w-[90vw] w-fit -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl dark:bg-gray-800"
+        className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl dark:bg-gray-800"
       >
         <button
           type="button"
