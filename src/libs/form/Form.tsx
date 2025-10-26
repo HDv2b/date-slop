@@ -339,7 +339,7 @@ const Form = () => {
           <>
             <label
               htmlFor="date"
-              className="mb-2 block text-sm font-medium text-red-700 "
+              className="mb-2 block text-sm font-medium text-red-700"
             >
               Date of Birth
             </label>
@@ -349,7 +349,7 @@ const Form = () => {
             >
               <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
                 <svg
-                  className="h-4 w-4 text-red-500 "
+                  className="h-4 w-4 text-red-500"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -366,7 +366,7 @@ const Form = () => {
                 onChange={hijackDatePicker}
                 onClick={hijackDatePicker}
                 ref={dateInputRef}
-                className="block w-full rounded-lg border border-red-300 bg-red-50 p-2.5 ps-10 text-sm text-red-900 focus:border-blue-500 focus:ring-blue-500 "
+                className="block w-full rounded-lg border border-red-300 bg-red-50 p-2.5 ps-10 text-sm text-red-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Select date"
                 required
                 readOnly
@@ -381,7 +381,7 @@ const Form = () => {
           <>
             <label
               htmlFor="date"
-              className="mb-2 block text-sm font-medium text-green-700 "
+              className="mb-2 block text-sm font-medium text-green-700"
             >
               Date of Birth
             </label>
@@ -391,7 +391,7 @@ const Form = () => {
             >
               <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
                 <svg
-                  className="h-4 w-4 text-green-500 "
+                  className="h-4 w-4 text-green-500"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -408,7 +408,7 @@ const Form = () => {
                 onChange={hijackDatePicker}
                 onClick={hijackDatePicker}
                 ref={dateInputRef}
-                className="block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 ps-10 text-sm text-green-900 focus:border-blue-500 focus:ring-blue-500  "
+                className="block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 ps-10 text-sm text-green-900 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Select date"
                 required
                 readOnly
@@ -420,7 +420,7 @@ const Form = () => {
         <div className="mt-4 mb-2 w-full text-right">
           <button
             type="submit"
-            className="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none "
+            className="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
           >
             Proceed
             <svg
@@ -444,14 +444,8 @@ const Form = () => {
 
       <dialog
         ref={chatDialogRef}
-        className={`
-        top-[5dvh] bottom-[5vh] left-[5vw] right-[5vw] rounded-xl 
-        fixed inset-0 z-50 m-0 p-0
-       overflow-hidden
-        bg-white text-gray-900 shadow-xl
-        duration-200
-        md:max-w-3xl md:mx-auto md:my-4 md:rounded-2xl
-      `}      >
+        className={`fixed inset-0 top-[5dvh] right-[5vw] bottom-[5vh] left-[5vw] z-50 m-0 overflow-hidden rounded-xl bg-white p-0 text-gray-900 shadow-xl duration-200 md:mx-auto md:my-4 md:max-w-3xl md:rounded-2xl`}
+      >
         <button
           type="button"
           onClick={cancelDialog}
@@ -479,7 +473,7 @@ const Form = () => {
                 message.role === "AI" ? (
                   <output
                     key={i}
-                    className="flex w-fit max-w-11/12 flex-col rounded-r-xl rounded-b-xl border-gray-200 bg-gray-100 p-4 leading-1.5 "
+                    className="flex w-fit max-w-11/12 flex-col rounded-r-xl rounded-b-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
                   >
                     <pre className="py-2.5 font-sans text-sm font-normal text-wrap text-gray-900">
                       {message.text}
@@ -488,7 +482,7 @@ const Form = () => {
                 ) : (
                   <div
                     key={i}
-                    className="flex-end flex w-fit max-w-11/12 flex-col self-end rounded-t-xl rounded-l-xl border-gray-200 bg-gray-100 p-4 leading-1.5 "
+                    className="flex-end flex w-fit max-w-11/12 flex-col self-end rounded-t-xl rounded-l-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
                   >
                     <div className="py-2.5 text-sm font-normal text-wrap text-gray-900">
                       {message.text}
@@ -506,7 +500,7 @@ const Form = () => {
                 name="response"
                 id="response"
                 ref={chatInputRef}
-                className="rounded-s-gray-100 rounded-s-2 z-20 block w-full rounded-e-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none "
+                className="rounded-s-gray-100 rounded-s-2 z-20 block w-full rounded-e-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
                 placeholder="Reply"
                 required
                 autoFocus
@@ -525,7 +519,7 @@ const Form = () => {
 
       <dialog
         ref={endDialogRef}
-        className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl "
+        className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
       >
         <button
           type="button"
@@ -552,7 +546,7 @@ const Form = () => {
           </p>
           <p className="m-4 text-xl">Agents will soon be on their way.</p>
           <button
-            className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none "
+            className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
             type="submit"
           >
             Go again?
