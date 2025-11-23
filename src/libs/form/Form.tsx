@@ -45,7 +45,6 @@ const Form = () => {
       good = false;
     }
     if (good) {
-      console.log('e')
       setEndDialogOpen(true);
     }
   };
@@ -230,7 +229,7 @@ const Form = () => {
     if (autoScroll) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
   React.useEffect(keepChatScrolledToBottom, [messages, autoScroll]);
 
   const adjustHeightForPhoneKeyboard = () => {
@@ -257,7 +256,7 @@ const Form = () => {
       window.visualViewport?.removeEventListener("resize", updatePosition);
       window.visualViewport?.removeEventListener("scroll", updatePosition);
     };
-  }
+  };
   useEffect(adjustHeightForPhoneKeyboard, [chatDialogOpen]);
 
   return (

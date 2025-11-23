@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 const EndDialog = ({
   onClose,
@@ -13,9 +13,15 @@ const EndDialog = ({
     dob: string;
   };
 }) => {
+  const endDialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    endDialogRef.current?.showModal();
+  }, []);
+
   return (
     <dialog
-      open
+      ref={endDialogRef}
       className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
     >
       <button
