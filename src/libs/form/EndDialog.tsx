@@ -14,7 +14,10 @@ const EndDialog = ({
   };
 }) => {
   return (
-    <dialog open className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl">
+    <dialog
+      open
+      className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
+    >
       <button
         type="button"
         onClick={onClose}
