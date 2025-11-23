@@ -226,14 +226,14 @@ const Form = () => {
     return () => observer.disconnect();
   }, []);
 
-  React.useEffect(() => {
+  const keepChatScrolledToBottom = () => {
     if (autoScroll) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, autoScroll]);
+  }
+  React.useEffect(keepChatScrolledToBottom, [messages, autoScroll]);
 
-  // Adjust height dynamically when keyboard appears
-  useEffect(() => {
+  const adjustHeightForPhoneKeyboard = () => {
     const dialog = chatDialogRef.current;
     if (!dialog) return;
 
@@ -257,7 +257,8 @@ const Form = () => {
       window.visualViewport?.removeEventListener("resize", updatePosition);
       window.visualViewport?.removeEventListener("scroll", updatePosition);
     };
-  }, [chatDialogOpen]);
+  }
+  useEffect(adjustHeightForPhoneKeyboard, [chatDialogOpen]);
 
   return (
     <>
