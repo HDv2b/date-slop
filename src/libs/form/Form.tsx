@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Loader from "@/libs/utils/Loader";
 
 const Form = () => {
   const chatDialogRef = useRef<HTMLDialogElement>(null);
@@ -450,7 +451,7 @@ const Form = () => {
         <button
           type="button"
           onClick={cancelDialog}
-          className="absolute top-1 right-1 rounded-xl bg-red-700 px-3 py-0.5 text-xl font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
+          className="absolute top-1 right-1 rounded-xl bg-red-700 px-3 pt-0.5 pb-1 text-xl font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
         >
           &times;
         </button>
@@ -491,6 +492,7 @@ const Form = () => {
                   </div>
                 ),
               )}
+              {loading && <Loader />}
               <div ref={bottomRef}></div>
             </div>
           </div>
