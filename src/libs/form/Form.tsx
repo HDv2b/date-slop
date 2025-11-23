@@ -2,10 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "@/libs/utils/Loader";
+import EndDialog from "@/libs/form/EndDialog";
 
 const Form = () => {
   const chatDialogRef = useRef<HTMLDialogElement>(null);
-  const endDialogRef = useRef<HTMLDialogElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
   const mainFormRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +27,7 @@ const Form = () => {
   );
   const [dateInputError, setDateInputError] = useState<string | null>(null);
   const [chatDialogOpen, setChatDialogOpen] = useState(false);
+  const [endDialogOpen, setEndDialogOpen] = useState(false);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -44,7 +45,8 @@ const Form = () => {
       good = false;
     }
     if (good) {
-      endDialogRef.current?.showModal();
+      console.log('e')
+      setEndDialogOpen(true);
     }
   };
 
@@ -188,12 +190,12 @@ const Form = () => {
   };
 
   const closeEndDialog = () => {
-    endDialogRef.current?.close();
+    setEndDialogOpen(false);
   };
 
   const restart = () => {
     chatDialogRef.current?.close();
-    endDialogRef.current?.close();
+    setEndDialogOpen(false);
     mainFormRef.current?.reset();
 
     setChatDialogOpen(false);
@@ -520,42 +522,20 @@ const Form = () => {
         </form>
       </dialog>
 
-      <dialog
-        ref={endDialogRef}
-        className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
-      >
-        <button
-          type="button"
-          onClick={closeEndDialog}
-          className="absolute top-1 right-1 rounded-xl bg-red-700 px-3 py-0.5 text-xl font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
-        >
-          &times;
-        </button>
-        <form onSubmit={restart} className="p-6 text-center">
-          <h1 className="text-3xl">
-            Thank you for your participation,{" "}
-            <span className="font-bold">{nameInputRef.current?.value}</span>.
-          </h1>
-          <ul className="m-4 text-xl">
-            <li>Name: {nameInputRef.current?.value}</li>
-            <li>Location: {locationInputRef.current?.value}</li>
-            {candidate && (
-              <li>DoB: {new Date(candidate).toLocaleDateString()}</li>
-            )}
-          </ul>
-          <p className="m-4 text-xl">
-            You have passed <span className="font-bold italic">"The Test"</span>
-            .
-          </p>
-          <p className="m-4 text-xl">Agents will soon be on their way.</p>
-          <button
-            className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none"
-            type="submit"
-          >
-            Go again?
-          </button>
-        </form>
-      </dialog>
+      {endDialogOpen &&
+        nameInputRef.current?.value &&
+        locationInputRef.current?.value &&
+        candidate && (
+          <EndDialog
+            onSubmit={restart}
+            onClose={closeEndDialog}
+            results={{
+              name: nameInputRef.current.value,
+              location: locationInputRef.current.value,
+              dob: new Date(candidate).toLocaleDateString(),
+            }}
+          />
+        )}
     </>
   );
 };
