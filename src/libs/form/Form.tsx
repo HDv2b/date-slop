@@ -1,32 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Loader from "@/libs/utils/Loader";
+import React, { useRef, useState } from "react";
 import EndDialog from "@/libs/form/EndDialog";
+import ChatDialog from "@/libs/form/ChatDialog";
 
 const Form = () => {
-  const chatDialogRef = useRef<HTMLDialogElement>(null);
-  const chatInputRef = useRef<HTMLInputElement>(null);
   const mainFormRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const locationInputRef = useRef<HTMLInputElement>(null);
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const skipFocus = React.useRef(false);
-  const controllerRef = useRef<AbortController | null>(null);
 
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<
-    { role: "AI" | "You"; text: string }[]
-  >([]);
-  const [loading, setLoading] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameInProgress, setGameInProgress] = useState(false);
   const [candidate, setCandidate] = useState<string | null>(null);
   const [nameInputError, setNameInputError] = useState<string | null>(null);
   const [locationInputError, setLocationInputError] = useState<string | null>(
     null,
   );
   const [dateInputError, setDateInputError] = useState<string | null>(null);
-  const [chatDialogOpen, setChatDialogOpen] = useState(false);
   const [endDialogOpen, setEndDialogOpen] = useState(false);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -49,131 +39,17 @@ const Form = () => {
     }
   };
 
-  const handleDialogSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    sendUserMessage();
-  };
-
   const cancelDialog = () => {
-    skipFocus.current = true;
-    // blur the input manually
-    chatInputRef.current?.blur();
-    // allow focusing again later
-    setTimeout(() => (skipFocus.current = false), 10);
-    closeDialog();
-    setGameStarted(false);
-    setMessages([]);
-    setSessionId(null);
-
-    if (controllerRef.current) {
-      controllerRef.current.abort("user cancelled");
-    }
+    setGameInProgress(false);
   };
 
   const hijackDatePicker = (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    if (skipFocus.current) {
-      return;
-    }
-    if (chatDialogRef.current) {
-      setChatDialogOpen(true);
-      chatDialogRef.current.showModal();
-    }
-    if (!gameStarted) {
-      console.log("starting");
-      setGameStarted(true);
-      startGame();
+    if (!gameInProgress) {
+      setGameInProgress(true);
     }
   };
-
-  async function startGame() {
-    if (controllerRef.current) {
-      controllerRef.current.abort("user restarted");
-    }
-
-    const controller = new AbortController();
-    controllerRef.current = controller;
-
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/guess", { signal: controller.signal });
-
-      if (controller.signal.aborted) return;
-
-      if (!res.ok) {
-        // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
-        throw new Error(`Server error: ${res.status}`);
-      }
-
-      const data = await res.json();
-      setLoading(false);
-      setSessionId(data.sessionId);
-      setMessages([{ role: "AI", text: data.assistant }]);
-    } catch (err: unknown) {
-      if (err instanceof DOMException && err.name === "AbortError") {
-        return;
-      } else {
-        console.error("Fetch error:", err);
-      }
-    }
-  }
-
-  async function sendUserMessage() {
-    if (!chatInputRef.current) {
-      return;
-    }
-    chatInputRef.current.focus();
-    const response = chatInputRef.current.value;
-    if (!sessionId || !response?.trim()) {
-      return;
-    }
-    chatInputRef.current.value = "";
-    setLoading(true);
-
-    setMessages((msgs) => [...msgs, { role: "You", text: response }]);
-
-    if (controllerRef.current) {
-      controllerRef.current.abort("user restarted");
-    }
-
-    const controller = new AbortController();
-    controllerRef.current = controller;
-
-    try {
-      const res = await fetch("/api/guess", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, userMessage: response }),
-        signal: controller.signal,
-      });
-
-      if (controller.signal.aborted) return;
-
-      if (!res.ok) {
-        // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
-        throw new Error(`Server error: ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      console.log(data);
-      setLoading(false);
-
-      setMessages((msgs) => [...msgs, { role: "AI", text: data.assistant }]);
-
-      if (data.assistant.toLowerCase().includes("success")) {
-        acceptCandidate(data.confirmedGuess);
-      }
-    } catch (err: unknown) {
-      if (err instanceof DOMException && err.name === "AbortError") {
-        return;
-      } else {
-        console.error("Fetch error:", err);
-      }
-    }
-  }
 
   const acceptCandidate = (guess: string) => {
     if (dateInputRef.current) {
@@ -183,81 +59,18 @@ const Form = () => {
     cancelDialog();
   };
 
-  const closeDialog = () => {
-    chatDialogRef.current?.close();
-    setChatDialogOpen(false);
-  };
-
   const closeEndDialog = () => {
     setEndDialogOpen(false);
   };
 
   const restart = () => {
-    chatDialogRef.current?.close();
+    setGameInProgress(false);
     setEndDialogOpen(false);
     mainFormRef.current?.reset();
-
-    setChatDialogOpen(false);
   };
 
-  useEffect(() => {
-    return () => {
-      if (controllerRef.current) {
-        controllerRef.current.abort();
-      }
-    };
-  }, []);
-
-  const bottomRef = React.useRef<HTMLDivElement>(null);
-  const chatRef = React.useRef<HTMLDivElement>(null);
-  const [autoScroll, setAutoScroll] = React.useState(true);
-
-  React.useEffect(() => {
-    const el = chatRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setAutoScroll(entry.isIntersecting),
-      { root: el, threshold: 1.0 },
-    );
-
-    observer.observe(bottomRef.current!);
-    return () => observer.disconnect();
-  }, []);
-
-  const keepChatScrolledToBottom = () => {
-    if (autoScroll) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  React.useEffect(keepChatScrolledToBottom, [messages, autoScroll]);
-
-  const adjustHeightForPhoneKeyboard = () => {
-    const dialog = chatDialogRef.current;
-    if (!dialog) return;
-
-    const updatePosition = () => {
-      const vv = window.visualViewport;
-      if (!vv) return;
-
-      dialog.style.position = "fixed";
-      dialog.style.left = `${vv.offsetLeft + 15}px`;
-      dialog.style.top = `${vv.offsetTop + 15}px`;
-      dialog.style.width = `${vv.width - 15}px`;
-      dialog.style.height = `${vv.height - 30}px`;
-    };
-
-    updatePosition(); // initial
-
-    window.visualViewport?.addEventListener("resize", updatePosition);
-    window.visualViewport?.addEventListener("scroll", updatePosition);
-
-    return () => {
-      window.visualViewport?.removeEventListener("resize", updatePosition);
-      window.visualViewport?.removeEventListener("scroll", updatePosition);
-    };
-  };
-  useEffect(adjustHeightForPhoneKeyboard, [chatDialogOpen]);
+  const name = nameInputRef.current?.value;
+  const location = locationInputRef.current?.value;
 
   return (
     <>
@@ -446,92 +259,23 @@ const Form = () => {
         </div>
       </form>
 
-      <dialog
-        ref={chatDialogRef}
-        className={`fixed inset-0 top-[5dvh] right-[5vw] bottom-[5vh] left-[5vw] z-50 m-0 overflow-hidden rounded-xl bg-white p-0 text-gray-900 shadow-xl duration-200 md:mx-auto md:my-4 md:max-w-3xl md:rounded-2xl`}
-      >
-        <button
-          type="button"
-          onClick={cancelDialog}
-          className="absolute top-1 right-1 rounded-xl bg-red-700 px-3 pt-0.5 pb-1 text-xl font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
-        >
-          &times;
-        </button>
-        <form
-          onSubmit={handleDialogSubmit}
-          className="flex h-full flex-col gap-4 overflow-y-hidden p-6"
-        >
-          <header className="flex w-full flex-row gap-4 py-2">
-            <img
-              className="h-8 w-8 rounded-full border-1 border-black"
-              src="/robot-bot-icon.webp"
-              alt="LLM Avatar"
-            />
-            <h3 className="text-xl font-semibold text-gray-900">
-              Da.i.te Agent #78EA98
-            </h3>
-          </header>
-          <div className="flex-1 overflow-auto">
-            <div ref={chatRef} className="flex flex-col gap-4 overflow-y-auto">
-              {messages.map((message, i) =>
-                message.role === "AI" ? (
-                  <output
-                    key={i}
-                    className="flex w-fit max-w-11/12 flex-col rounded-r-xl rounded-b-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
-                  >
-                    <pre className="py-2.5 font-sans text-sm font-normal text-wrap text-gray-900">
-                      {message.text}
-                    </pre>
-                  </output>
-                ) : (
-                  <div
-                    key={i}
-                    className="flex-end flex w-fit max-w-11/12 flex-col self-end rounded-t-xl rounded-l-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
-                  >
-                    <div className="py-2.5 text-sm font-normal text-wrap text-gray-900">
-                      {message.text}
-                    </div>
-                  </div>
-                ),
-              )}
-              {loading && <Loader />}
-              <div ref={bottomRef}></div>
-            </div>
-          </div>
-          <div className="mt-4 flex">
-            <div className="relative flex w-full flex-row">
-              <input
-                type="text"
-                name="response"
-                id="response"
-                ref={chatInputRef}
-                className="rounded-s-gray-100 z-20 my-[1px] -mr-[2px] block grow rounded-s-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
-                placeholder="Reply"
-                required
-                autoFocus
-              />
-              <button
-                type="button"
-                onClick={sendUserMessage}
-                className="h-full rounded-e-lg border bg-blue-600 p-2.5 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                Reply
-              </button>
-            </div>
-          </div>
-        </form>
-      </dialog>
+      {gameInProgress && (
+        <ChatDialog
+          onResult={acceptCandidate}
+          onCancel={() => setGameInProgress(false)}
+        />
+      )}
 
       {endDialogOpen &&
-        nameInputRef.current?.value &&
-        locationInputRef.current?.value &&
+        name &&
+        location &&
         candidate && (
           <EndDialog
             onSubmit={restart}
             onClose={closeEndDialog}
             results={{
-              name: nameInputRef.current.value,
-              location: locationInputRef.current.value,
+              name,
+              location,
               dob: new Date(candidate).toLocaleDateString(),
             }}
           />
