@@ -49,6 +49,8 @@ const ChatDialog = ({
   useEffect(adjustHeightForPhoneKeyboard, []);
 
   useEffect(() => {
+    chatDialogRef.current?.showModal();
+
     return () => {
       if (controllerRef.current) {
         controllerRef.current.abort();
@@ -77,10 +79,6 @@ const ChatDialog = ({
     }
   };
   useEffect(scrolledToBottom, [messages, autoScroll]);
-
-  useEffect(() => {
-    chatDialogRef.current?.showModal();
-  }, []);
 
   const startGame = async () => {
     const controller = new AbortController();
