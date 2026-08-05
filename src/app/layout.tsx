@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Date Slop",
   description: "Bas UX World Cup entry by Hussein Duvigneau",
+  icons: {
+    icon: "/robot-bot-icon.webp",
+    shortcut: "/robot-bot-icon.webp"
+  },
 };
 
 export default function RootLayout({
