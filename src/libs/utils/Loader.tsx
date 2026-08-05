@@ -1,6 +1,15 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 
 const Loader = () => {
+  const [slow, setSlow] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setSlow(true), 10000);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="animate-fadeIn opacity-0">
       <div className="relative mx-auto h-[37.5px] w-[50px] animate-pulse rounded-full bg-gray-200 before:absolute before:top-[25px] before:left-[-7.5px] before:box-border before:rotate-45 before:border-[7.5px] before:border-t-[12.5px] before:border-transparent before:border-t-gray-200 before:content-[''] after:absolute after:top-1/2 after:left-1/2 after:h-[6px] after:w-[6px] after:-translate-x-1/2 after:-translate-y-1/2 after:[animation:flash_0.5s_ease-out_infinite_alternate] after:rounded-full after:bg-[#FF3D00] after:shadow-[10px_0_#FF3D00,-10px_0_#FF3D00] after:content-['']">
@@ -31,6 +40,11 @@ const Loader = () => {
           `}
         </style>
       </div>
+      {slow && (
+        <div className="mt-2 text-center text-sm text-gray-600">
+          Sorry if this is taking a while, I'm on the free tier!
+        </div>
+      )}
     </div>
   );
 };
