@@ -46,8 +46,15 @@ Your task is to input their birth date (month, day, year) into a web form on beh
 - If the user tells you the guess is correct, reply with just the single word "SUCCESS", followed by a single space, and then the date, in format YYYY-MM-DD with no other words or characters.
 `;
 
+type Timings = { totalMs: number; aiMs: number };
+
+type GetResponsePayload = { sessionId: string; assistant: string; timings?: Timings };
+
+type PostResponsePayload = { assistant: string; confirmedGuess: string | null; timings?: Timings };
+
 // 🟢 NEW: Start a new game session
-export async function GET() {
+export async function GET(req: Request) {
+  const start = Date.now();
   const sessionId = crypto.randomUUID();
 
   const messages: ChatCompletionMessageParam[] = [
@@ -55,10 +62,12 @@ export async function GET() {
   ];
 
   // Let the LLM open the conversation
+  const beforeOpenAI = Date.now();
   const resp = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages,
   });
+  const afterOpenAI = Date.now();
 
   if (!resp.choices[0].message.content) {
     throw new Error("Content missing from AI response");
@@ -70,11 +79,22 @@ export async function GET() {
   // @ts-expect-error - this works
   sessions.set(sessionId, { messages });
 
-  return NextResponse.json({ sessionId, assistant: assistantMsg });
+  const total = Date.now() - start;
+  const aiLatency = afterOpenAI - beforeOpenAI;
+  console.log(`[guess] GET session=${sessionId} total=${total}ms ai=${aiLatency}ms`);
+
+  const url = new URL(req.url);
+  const debug = url.searchParams.get('debug') === '1';
+
+  const payload: GetResponsePayload = { sessionId, assistant: assistantMsg };
+  if (debug) payload.timings = { totalMs: total, aiMs: aiLatency };
+
+  return NextResponse.json(payload);
 }
 
 // 🟡 Existing POST handler stays the same
 export async function POST(req: Request) {
+  const start = Date.now();
   const { sessionId, userMessage } = await req.json();
 
   if (!sessionId) {
@@ -88,11 +108,13 @@ export async function POST(req: Request) {
 
   session.messages.push({ role: "user", content: userMessage });
 
+  const beforeOpenAI = Date.now();
   const resp = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     // @ts-expect-error - this works
     messages: session.messages,
   });
+  const afterOpenAI = Date.now();
 
   if (!resp.choices[0].message.content) {
     throw new Error("Content missing from AI response");
@@ -101,8 +123,17 @@ export async function POST(req: Request) {
   const assistantMsg = resp.choices[0].message.content.trim();
   session.messages.push({ role: "assistant", content: assistantMsg });
 
+  const total = Date.now() - start;
+  const aiLatency = afterOpenAI - beforeOpenAI;
+  console.log(`[guess] POST session=${sessionId} total=${total}ms ai=${aiLatency}ms userMsgLen=${userMessage?.length || 0}`);
+
   const finalMatch = assistantMsg.match(/SUCCESS\s*(\d{4}-\d{2}-\d{2})/);
   const confirmedGuess = finalMatch ? finalMatch[1] : null;
 
-  return NextResponse.json({ assistant: assistantMsg, confirmedGuess });
+  const url = new URL(req.url);
+  const debug = url.searchParams.get('debug') === '1';
+  const payload: PostResponsePayload = { assistant: assistantMsg, confirmedGuess };
+  if (debug) payload.timings = { totalMs: total, aiMs: aiLatency };
+
+  return NextResponse.json(payload);
 }
