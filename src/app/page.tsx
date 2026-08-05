@@ -43,7 +43,7 @@ export default function Home() {
           This is a parody demo built by{" "}
           <a
             target="_blank"
-            href="https://www.linkedin.com/in/husseinduvigneau/"
+            href="https://github.com/HDv2b"
             className="inline-flex items-center text-blue-600 hover:underline"
           >
             Hussein Duvigneau
