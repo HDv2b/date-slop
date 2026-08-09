@@ -51,7 +51,7 @@ export default function Home() {
           for the{" "}
           <a
             target="_blank"
-            href="https://badux.lol/"
+            href="https://www.youtube.com/watch?v=PGpwoWGXBK0"
             className="0 inline-flex items-center text-blue-600 hover:underline"
           >
             Bad UX World Cup
