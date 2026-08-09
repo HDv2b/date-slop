@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description: "Bas UX World Cup entry by Hussein Duvigneau",
   icons: {
     icon: "/robot-bot-icon.webp",
-    shortcut: "/robot-bot-icon.webp"
+    shortcut: "/robot-bot-icon.webp",
   },
 };
 

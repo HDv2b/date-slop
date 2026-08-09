@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 };
 
 // Safely apply the compiler config dynamically only for production builds
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   nextConfig.compiler = {
     removeConsole:
       process.env.NODE_ENV === "production"

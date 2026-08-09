@@ -27,9 +27,10 @@ const Form = () => {
       error: "h-4 w-4 text-red-500",
     },
     dateInput: {
-      ok:"block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 ps-10 text-sm text-green-900 focus:border-blue-500 focus:ring-blue-500",
-      error: "block w-full rounded-lg border border-red-300 bg-red-50 p-2.5 ps-10 text-sm text-red-900 focus:border-blue-500 focus:ring-blue-500",
-    }
+      ok: "block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 ps-10 text-sm text-green-900 focus:border-blue-500 focus:ring-blue-500",
+      error:
+        "block w-full rounded-lg border border-red-300 bg-red-50 p-2.5 ps-10 text-sm text-red-900 focus:border-blue-500 focus:ring-blue-500",
+    },
   };
 
   const {
@@ -39,7 +40,7 @@ const Form = () => {
     setValue,
     getValues,
     reset,
-  } = useForm<Inputs>({shouldFocusError: false});
+  } = useForm<Inputs>({ shouldFocusError: false });
 
   const mainFormRef = useRef<HTMLFormElement>(null);
 
@@ -47,13 +48,13 @@ const Form = () => {
   const [endDialogOpen, setEndDialogOpen] = useState(false);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.trace('submitted');
+    console.trace("submitted");
     console.log({ data });
     setEndDialogOpen(true);
   };
 
   const onSubmitError: SubmitErrorHandler<Inputs> = (data) => {
-    console.trace('Submitted with error');
+    console.trace("Submitted with error");
     console.log({ data });
   };
 
@@ -84,7 +85,7 @@ const Form = () => {
     reset();
   };
 
-  console.log({errors})
+  console.log({ errors });
 
   return (
     <>
@@ -109,9 +110,9 @@ const Form = () => {
                 errors.name ? formStyles.input.error : formStyles.input.ok
               }
             />
-            {errors.name &&
+            {errors.name && (
               <div className="pt-2 text-sm text-red-700">We need a name!</div>
-            }
+            )}
           </>
         </div>
 
@@ -131,9 +132,11 @@ const Form = () => {
                 errors.location ? formStyles.input.error : formStyles.input.ok
               }
             />
-            {errors.location &&
-              <div className="pt-2 text-sm text-red-700">We need a location!</div>
-            }
+            {errors.location && (
+              <div className="pt-2 text-sm text-red-700">
+                We need a location!
+              </div>
+            )}
           </>
         </div>
 
@@ -146,13 +149,12 @@ const Form = () => {
           >
             Date of Birth
           </label>
-          <div
-            className="group relative z-0 w-full"
-            onClick={hijackDatePicker}
-          >
+          <div className="group relative z-0 w-full" onClick={hijackDatePicker}>
             <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5">
               <svg
-                className={errors.date ? formStyles.icon.error : formStyles.icon.ok}
+                className={
+                  errors.date ? formStyles.icon.error : formStyles.icon.ok
+                }
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
@@ -168,16 +170,20 @@ const Form = () => {
               onFocus={hijackDatePicker}
               onChange={hijackDatePicker}
               onClick={hijackDatePicker}
-              className={errors.date ? formStyles.dateInput.error : formStyles.dateInput.ok}
+              className={
+                errors.date
+                  ? formStyles.dateInput.error
+                  : formStyles.dateInput.ok
+              }
               placeholder="Select date"
               readOnly
             />
           </div>
 
           <div className="mb-2 pt-2 text-sm text-red-700">
-            {errors.date &&
+            {errors.date && (
               <div className="pt-2 text-sm text-red-700">We need a date!</div>
-            }
+            )}
           </div>
         </>
 
@@ -218,9 +224,9 @@ const Form = () => {
           onSubmit={restart}
           onClose={closeEndDialog}
           results={{
-            name: getValues('name'),
-            location: getValues('location'),
-            dob: new Date(getValues('date')).toLocaleDateString(),
+            name: getValues("name"),
+            location: getValues("location"),
+            dob: new Date(getValues("date")).toLocaleDateString(),
           }}
         />
       )}

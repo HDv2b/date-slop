@@ -17,7 +17,9 @@ const EndDialog = ({
 
   useEffect(() => {
     endDialogRef.current?.showModal();
-    return () => {endDialogRef.current?.close();};
+    return () => {
+      endDialogRef.current?.close();
+    };
   }, []);
 
   return (
