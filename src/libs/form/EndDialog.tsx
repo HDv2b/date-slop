@@ -16,9 +16,10 @@ const EndDialog = ({
   const endDialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    endDialogRef.current?.showModal();
+    const dialog = endDialogRef.current;
+    dialog?.showModal();
     return () => {
-      endDialogRef.current?.close();
+      dialog?.close();
     };
   }, []);
 

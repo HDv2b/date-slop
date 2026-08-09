@@ -54,14 +54,15 @@ const ChatDialog = ({
   useEffect(adjustHeightForPhoneKeyboard, []);
 
   useEffect(() => {
-    chatDialogRef.current?.showModal();
+    const dialog = chatDialogRef.current;
+    dialog?.showModal();
 
     return () => {
       if (controllerRef.current) {
         controllerRef.current.abort();
       }
 
-      chatDialogRef.current?.close();
+      dialog?.close();
     };
   }, []);
 
