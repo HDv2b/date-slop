@@ -10,10 +10,12 @@ export default function KeepAlive() {
         fetch("/api/guess?keepalive=1", { cache: "no-store" }).catch(() => {});
         try {
           sessionStorage.setItem(key, "1");
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       }
     } catch (e) {
-      // ignore
+      console.error(e);
     }
   }, []);
 

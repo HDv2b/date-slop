@@ -13,9 +13,9 @@ const response = await openai.responses.create({
 });
  */
 
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions/completions";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import { ChatCompletionMessageParam } from "openai/resources/chat/completions/completions";
 
 const sessions = new Map<
   string,

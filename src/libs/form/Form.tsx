@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
-import EndDialog from "@/libs/form/EndDialog";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import ChatDialog from "@/libs/form/ChatDialog";
+import EndDialog from "@/libs/form/EndDialog";
 
 type Inputs = {
   name: string;

@@ -23,11 +23,15 @@ const ChatDialog = ({
 
   const adjustHeightForPhoneKeyboard = () => {
     const dialog = chatDialogRef.current;
-    if (!dialog) return;
+    if (!dialog) {
+      return;
+    }
 
     const updatePosition = () => {
       const vv = window.visualViewport;
-      if (!vv) return;
+      if (!vv) {
+        return;
+      }
 
       dialog.style.position = "fixed";
       dialog.style.left = `${vv.offsetLeft + 15}px`;
@@ -62,7 +66,9 @@ const ChatDialog = ({
 
   useEffect(() => {
     const el = chatRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => setAutoScroll(entry.isIntersecting),
@@ -87,7 +93,9 @@ const ChatDialog = ({
     try {
       const res = await fetch("/api/guess", { signal: controller.signal });
 
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted) {
+        return;
+      }
 
       if (!res.ok) {
         // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
@@ -144,7 +152,9 @@ const ChatDialog = ({
         signal: controller.signal,
       });
 
-      if (controller.signal.aborted) return;
+      if (controller.signal.aborted) {
+        return;
+      }
 
       if (!res.ok) {
         // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
