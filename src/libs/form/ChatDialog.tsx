@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Loader from "@/libs/utils/Loader";
 
 const ChatDialog = ({
@@ -197,10 +198,12 @@ const ChatDialog = ({
         className="flex h-full flex-col gap-4 overflow-y-hidden p-6"
       >
         <header className="flex w-full flex-row gap-4 py-2">
-          <img
+          <Image
             className="h-8 w-8 rounded-full border-1 border-black"
             src="/robot-bot-icon.webp"
             alt="LLM Avatar"
+            width={32}
+            height={32}
           />
           <h3 className="text-xl font-semibold text-gray-900">
             Da.i.te Agent #78EA98
