@@ -15,7 +15,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Date Slop",
-  description: "Bas UX World Cup entry by Hussein Duvigneau",
+  description:
+    "Date Slop is a deliberately bad date-picker demo by Hussein Duvigneau for a Bad UX competition: an AI agent hijacks the date field and asks you questions until it guesses your birth date, creating a frustrating but hopefully amusing UX experience.",
+  keywords: [
+    "Bad UX",
+    "date picker",
+    "AI agent",
+    "UX demo",
+    "frustrating interface",
+    "date of birth",
+    "LLM prank",
+  ],
   icons: {
     icon: "/robot-bot-icon.webp",
     shortcut: "/robot-bot-icon.webp",
