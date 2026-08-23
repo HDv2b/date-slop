@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Date Slop
 
-## Getting Started
+This is a deliberately bad date-picker demo for a Bad UX competition. The date field is hijacked by an AI agent that insists on entering the date for you, even though it is bad at understanding dates. The agent asks you questions, and you have to answer with vague clues until it eventually guesses the right day.
 
-First, run the development server:
+You can see the [finalists presented on YouTube](https://www.youtube.com/watch?v=PGpwoWGXBK0). This entry did make it, so I guess it wasn't bad enough! 
+
+The main challenge was tuning the agent prompts so the experience was frustrating enough to be amusing, but not so hard that the user gave up. The goal was to make it work for both people who know the usual LLM tricks and people who barely use technology at all.
+
+## Local setup
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create a `.env.local` file in the project root and add:
+
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+3. Start the app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open the app in your browser:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Hosting this demo
 
-## Learn More
+Deploy the app with the `OPENAI_API_KEY` environment variable set in your host.
 
-To learn more about Next.js, take a look at the following resources:
+### Option 1: Vercel (recommended)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Push the project to GitHub
+- Import it into Vercel
+- Add `OPENAI_API_KEY` in project settings as an environment variable
+- Redeploy the app
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Option 2: Any Node.js host
 
-## Deploy on Vercel
+Use the same environment variable setup and run:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npm run start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Keep the API key in the host environment only; do not commit it to source control.
+
+## How to play
+
+1. Fill in the name and location fields.
+2. Click the date of birth field.
+3. The date picker is hijacked by a chat window with an AI assistant.
+4. The assistant asks questions and tries to guess your birthdate, but it is terrible at reading dates directly.
+5. Answer with clues using context, history, culture, technology, or other indirect references instead of explicit dates or months.
+6. If it guesses wrong, keep replying with more hints until it eventually lands on a date.
+7. Once it is confident, it fills in the date field automatically.
+
+This is intentionally frustrating UX: the agent is supposedly helping, but it cannot actually interpret dates well, which is the joke.
