@@ -4,9 +4,7 @@ An AI-powered date picker that makes entering your date of birth unnecessarily d
 
 **[Try the live demo](https://date-slop.hdv.dev)**
 
-<!-- Replace with a real screenshot or GIF -->
-
-![Date Slop screenshot](./docs/date-slop-screenshot.png)
+![Date Slop screenshot](./docs/screenshot-2a.png)
 
 Date Slop was built as an entry for the **Bad UX World Cup**. Instead of letting you simply enter your date of birth, the date field is hijacked by an AI assistant that insists on working it out for you.
 
