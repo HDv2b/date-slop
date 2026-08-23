@@ -3,11 +3,31 @@ import Form from "@/libs/form/Form";
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between bg-zinc-50 font-sans">
-      <main className="h-fit-content flex w-full max-w-3xl grow flex-col items-center justify-start bg-white px-8 py-8 sm:items-start">
+      <header className="flex w-full max-w-3xl items-center justify-between bg-white px-8 pt-6">
         <div className="flex flex-col justify-center">
           <h1 className="mb-4 text-4xl leading-none font-extrabold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
             Da.i.te Slop
           </h1>
+        </div>
+        <a
+          href="https://github.com/HDv2b/date-slop"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="View project on GitHub"
+          className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="h-5 w-5 fill-current"
+          >
+            <path d="M12 2C6.477 2 2 6.58 2 12.218c0 4.512 2.865 8.34 6.839 9.694.5.093.683-.218.683-.484 0-.236-.009-1.024-.014-1.86-2.782.607-3.369-1.342-3.369-1.342-.455-1.16-1.11-1.468-1.11-1.468-.908-.622.069-.61.069-.61 1.004.071 1.533 1.033 1.533 1.033.892 1.53 2.341 1.088 2.91.833.091-.648.349-1.089.635-1.338-2.221-.253-4.555-1.113-4.555-4.955 0-1.094.39-1.989 1.029-2.689-.103-.253-.446-1.275.098-2.656 0 0 .84-.269 2.75 1.026A9.57 9.57 0 0 1 12 6.844c.85.004 1.705.115 2.505.338 1.909-1.295 2.748-1.026 2.748-1.026.546 1.381.203 2.403.1 2.656.64.7 1.028 1.595 1.028 2.689 0 3.85-2.337 4.699-4.566 4.947.359.31.679.92.679 1.854 0 1.338-.012 2.416-.012 2.747 0 .27.18.58.688.481A10.02 10.02 0 0 0 22 12.218C22 6.58 17.523 2 12 2Z" />
+          </svg>
+          <span>HDv2b/date-slop</span>
+        </a>
+      </header>
+      <main className="h-fit-content flex w-full max-w-3xl grow flex-col items-center justify-start bg-white px-8 py-8 sm:items-start">
+        <div className="flex flex-col justify-center">
           <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl">
             Welcome to <span className="italic">The DysFuture&trade;</span>,
             where automation is life, and even basic tasks like entering your
@@ -61,8 +81,8 @@ export default function Home() {
             <a
               href="https://github.com/HDv2b"
               rel="noreferrer"
-              aria-label="GitHub"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
+              aria-label="HDv2b on GitHub"
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -71,12 +91,13 @@ export default function Home() {
               >
                 <path d="M12 2C6.477 2 2 6.58 2 12.218c0 4.512 2.865 8.34 6.839 9.694.5.093.683-.218.683-.484 0-.236-.009-1.024-.014-1.86-2.782.607-3.369-1.342-3.369-1.342-.455-1.16-1.11-1.468-1.11-1.468-.908-.622.069-.61.069-.61 1.004.071 1.533 1.033 1.533 1.033.892 1.53 2.341 1.088 2.91.833.091-.648.349-1.089.635-1.338-2.221-.253-4.555-1.113-4.555-4.955 0-1.094.39-1.989 1.029-2.689-.103-.253-.446-1.275.098-2.656 0 0 .84-.269 2.75 1.026A9.57 9.57 0 0 1 12 6.844c.85.004 1.705.115 2.505.338 1.909-1.295 2.748-1.026 2.748-1.026.546 1.381.203 2.403.1 2.656.64.7 1.028 1.595 1.028 2.689 0 3.85-2.337 4.699-4.566 4.947.359.31.679.92.679 1.854 0 1.338-.012 2.416-.012 2.747 0 .27.18.58.688.481A10.02 10.02 0 0 0 22 12.218C22 6.58 17.523 2 12 2Z" />
               </svg>
+              <span>HDv2b</span>
             </a>
             <a
-              href="https://www.linkedin.com/in/husseinduvigneau/"
+              href="https://www.linkedin.com/in/hussein-duvigneau/"
               rel="noreferrer"
-              aria-label="LinkedIn"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
+              aria-label="hussein.duvigneau on LinkedIn"
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -85,6 +106,7 @@ export default function Home() {
               >
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-1.337-.025-3.063-1.867-3.063-1.868 0-2.154 1.459-2.154 2.961v5.706h-3v-11h2.881v1.494h.041c.401-.759 1.381-1.56 2.841-1.56 3.041 0 3.601 2 3.601 4.601v6.465z" />
               </svg>
+              <span>hdv</span>
             </a>
           </div>
         </div>
