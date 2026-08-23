@@ -16,4 +16,6 @@ A web-based satire of over-engineered AI automation, highlighting the friction a
 
 * **Type:** Single-page Web Application / Game
 * **URL:** https://date-slop.hdv.dev/
+* **Source Code:** https://github.com/HDv2b/date-slop
 * **Author:** Hussein Duvigneau
+* **Author Website:** https://hdv.dev/
