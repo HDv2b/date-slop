@@ -88,36 +88,37 @@ const ChatDialog = ({
   };
   useEffect(scrolledToBottom, [messages, autoScroll]);
 
-  const startGame = async () => {
+  useEffect(() => {
     const controller = new AbortController();
     controllerRef.current = controller;
 
-    try {
-      const res = await fetch("/api/guess", { signal: controller.signal });
+    const startGame = async () => {
+      try {
+        const res = await fetch("/api/guess", { signal: controller.signal });
 
-      if (controller.signal.aborted) {
-        return;
-      }
+        if (controller.signal.aborted) {
+          return;
+        }
 
-      if (!res.ok) {
-        // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
-        throw new Error(`Server error: ${res.status}`);
-      }
+        if (!res.ok) {
+          // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
+          throw new Error(`Server error: ${res.status}`);
+        }
 
-      const data = await res.json();
-      setLoading(false);
-      setSessionId(data.sessionId);
-      setMessages([{ role: "AI", text: data.assistant }]);
-    } catch (err: unknown) {
-      if (err instanceof DOMException && err.name === "AbortError") {
-        return;
-      } else {
-        console.error("Fetch error:", err);
+        const data = await res.json();
+        setLoading(false);
+        setSessionId(data.sessionId);
+        setMessages([{ role: "AI", text: data.assistant }]);
+      } catch (err: unknown) {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return;
+        } else {
+          console.error("Fetch error:", err);
+        }
       }
-    }
-  };
-  useEffect(() => {
-    startGame();
+    };
+
+    void startGame();
   }, []);
 
   const handleDialogSubmit = (event: React.FormEvent) => {
@@ -216,18 +217,18 @@ const ChatDialog = ({
               message.role === "AI" ? (
                 <output
                   key={i}
-                  className="flex w-fit max-w-11/12 flex-col rounded-r-xl rounded-b-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
+                  className="flex w-fit max-w-11/12 flex-col rounded-r-xl rounded-b-xl border border-slate-200 bg-slate-100 p-4 leading-1.5"
                 >
-                  <pre className="py-2.5 font-sans text-sm font-normal text-wrap text-gray-900">
+                  <pre className="py-2.5 font-sans text-sm font-normal text-wrap text-slate-900">
                     {message.text}
                   </pre>
                 </output>
               ) : (
                 <div
                   key={i}
-                  className="flex-end flex w-fit max-w-11/12 flex-col self-end rounded-t-xl rounded-l-xl border-gray-200 bg-gray-100 p-4 leading-1.5"
+                  className="flex-end flex w-fit max-w-11/12 flex-col self-end rounded-t-xl rounded-l-xl border border-emerald-200 bg-emerald-100 p-4 leading-1.5"
                 >
-                  <div className="py-2.5 text-sm font-normal text-wrap text-gray-900">
+                  <div className="py-2.5 text-sm font-normal text-wrap text-emerald-950">
                     {message.text}
                   </div>
                 </div>
