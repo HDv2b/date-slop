@@ -8,13 +8,13 @@ An AI-powered date picker that makes entering your date of birth unnecessarily d
 
 Date Slop was built as an entry for the **Bad UX World Cup**. Instead of letting you simply enter your date of birth, the date field is hijacked by an AI assistant that insists on working it out for you.
 
-It asks questions. You give it vague clues. It makes guesses. Eventually, if all goes well, it figures out your birthday and fills in the field itself.
+It asks questions. You give it clues. It makes guesses. Eventually, if all goes well, it figures out your birthday and fills in the field itself.
 
 The result is intentionally frustrating.
 
 ## 💡 Why I built it
 
-The premise was simple: take something that should be extremely easy — entering a date — and replace it with an unnecessarily complicated AI interaction.
+The idea came to me to parody the way that the modern web is littered with AI chat agents which insist on making tasks more difficult. 
 
 The interesting part was finding the balance between **bad UX and unusable UX**.
 
@@ -40,8 +40,6 @@ Much of the work therefore involved experimenting with the model's instructions 
 5. If the user tries to give the date directly, the assistant rejects it and asks another question.
 6. The conversation continues until the assistant believes it can identify a specific date.
 7. Its final guess is written back into the original form.
-
-The OpenAI API is accessed through the Next.js backend, keeping the API key on the server rather than exposing it to the browser.
 
 ## 🛠️ Tech
 
