@@ -1,0 +1,80 @@
+# ============================================================
+# General crawling
+# ============================================================
+
+User-agent: *
+Allow: /
+
+# Don't crawl/index portfolio imagery.
+Disallow: /_next/image
+Disallow: /*.png$
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.gif$
+Disallow: /*.webp$
+Disallow: /*.avif$
+Disallow: /*.svg$
+
+
+# ============================================================
+# AI model-training crawlers
+# Search / user-requested AI access remains allowed where
+# the provider exposes separate crawler controls.
+# ============================================================
+
+# OpenAI
+# OAI-SearchBot remains allowed via User-agent: *
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic
+# Claude-SearchBot and Claude-User remain allowed
+User-agent: ClaudeBot
+Disallow: /
+
+# Apple
+# Applebot remains allowed for Search, Siri, Spotlight, etc.
+User-agent: Applebot-Extended
+Disallow: /
+
+# Amazon
+# Amzn-SearchBot and Amzn-User remain allowed
+User-agent: Amazonbot
+Disallow: /
+
+# Common Crawl
+# Public crawl corpus commonly used as a source dataset.
+User-agent: CCBot
+Disallow: /
+
+
+# ============================================================
+# Mixed-purpose AI crawlers
+#
+# These are less cleanly separable into "training" vs
+# "discovery". Blocking them may reduce AI visibility.
+# Uncomment these if avoiding training/data collection is more
+# important than maximum AI discoverability.
+# ============================================================
+
+# Google:
+# Google-Extended covers BOTH Gemini model training and
+# some Gemini grounding. It does NOT affect normal Google Search.
+#
+# User-agent: Google-Extended
+# Disallow: /
+
+# Meta:
+# Meta-ExternalAgent is used for AI model training AND some
+# product indexing. Meta's user-requested ExternalFetcher is
+# separate and may ignore robots.txt.
+#
+# User-agent: Meta-ExternalAgent
+# Disallow: /
+
+
+# ============================================================
+# Sitemap
+# ============================================================
+
+Sitemap: https://date-slop.hdv.dev/sitemap.xml

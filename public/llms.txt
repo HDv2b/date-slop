@@ -1,0 +1,19 @@
+### Date Slop
+
+An adversarial, interactive Bad UX experiment where an incompetent AI agent hijacks entry of a date input field.
+
+### Core Mechanics
+
+* **Hijacked Input:** The date input field is entirely controlled by an unhelpful AI agent.
+* **No Direct Entry:** Users are structurally blocked from typing, selecting, or directly inputting their target date.
+* **Clue-Based Loop:** Users must feed the agent contextual text clues to guide it. The agent cannot interpret standard dates natively, forcing a game of "hot or cold" until it guesses correctly.
+
+### Purpose
+
+A web-based satire of over-engineered AI automation, highlighting the friction and absurdity of replacing simple UI controls with conversational agents.
+
+### Technical Details
+
+* **Type:** Single-page Web Application / Game
+* **URL:** https://date-slop.hdv.dev/
+* **Author:** Hussein Duvigneau

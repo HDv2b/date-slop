@@ -26,9 +26,41 @@ export const metadata: Metadata = {
     "date of birth",
     "LLM prank",
   ],
+  openGraph: {
+    title: "Date Slop - The Adversarial Agent Date Picker",
+    description:
+      "A bad UX game where an AI agent hijacks your data entry. Give it clues to help it guess your date.",
+    url: "https://date-slop.hdv.dev",
+    type: "website",
+  },
   icons: {
     icon: "/robot-bot-icon.webp",
     shortcut: "/robot-bot-icon.webp",
+  },
+  other: {
+    "application/ld+json": JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Date Slop",
+      url: "https://date-slop.hdv.dev",
+      description:
+        "An interactive Bad UX game where a date input field is hijacked by an incompetent AI agent. Users are blocked from direct text entry and must provide contextual clues to guide the agent into guessing the correct date.",
+      applicationCategory: "Game Application",
+      operatingSystem: "All",
+      author: {
+        "@type": "Person",
+        name: "Hussein Duvigneau",
+        url: "https://hdv.dev",
+      },
+      keywords: [
+        "Bad UX",
+        "date picker",
+        "AI agent",
+        "interactive web app",
+        "frustrating UX",
+        "LLM prank",
+      ],
+    }),
   },
 };
 
