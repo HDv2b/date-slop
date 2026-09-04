@@ -27,7 +27,7 @@ const ChatDialog = ({
     chatInputRef.current?.focus();
   }, []);
 
-  const { sessionId, messages, loading, sendMessage } =
+  const { messages, loading, error, ready, sendMessage } =
     useChatSession(onResult);
   const { containerRef: chatRef, bottomRef } = useAutoScrollToBottom(messages);
 
@@ -42,7 +42,7 @@ const ChatDialog = ({
     }
     chatInputRef.current.focus();
     const response = chatInputRef.current.value;
-    if (!sessionId || !response?.trim()) {
+    if (!ready || !response?.trim()) {
       return;
     }
     chatInputRef.current.value = "";
@@ -77,6 +77,11 @@ const ChatDialog = ({
               <ChatBubble key={i} message={message} />
             ))}
             {loading && <Loader />}
+            {error && (
+              <p role="alert" className="text-sm text-red-700">
+                {error}
+              </p>
+            )}
             <div ref={bottomRef}></div>
           </div>
         </div>

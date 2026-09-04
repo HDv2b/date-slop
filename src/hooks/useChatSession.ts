@@ -1,108 +1,125 @@
 "use client";
 
+import { continueConversation, openConversation } from "@/lib/guessApi";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type ChatMessage = { role: "AI" | "You"; text: string };
+import { ChatMessage } from "@/types/chat";
+
+const GREETING_FAILED =
+  "The agent could not be reached. Close this and try again.";
+const REPLY_FAILED = "The agent did not reply. Try sending that again.";
 
 /**
- * Owns the date-guessing chat session with the AI agent: starts a session
- * on mount, sends the user's replies, and reports the confirmed date guess
- * via onResult. Superseded or abandoned requests are aborted.
+ * Hands out an AbortController for the newest request, aborting whichever one
+ * it supersedes, and an abort for when the session is abandoned.
  */
-export function useChatSession(onResult: (date: string) => void) {
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [loading, setLoading] = useState(true);
+function useLatestRequest() {
   const controllerRef = useRef<AbortController | null>(null);
 
-  useEffect(() => {
+  const start = useCallback(() => {
+    controllerRef.current?.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
+    return controller;
+  }, []);
 
-    const startGame = async () => {
+  const abort = useCallback(() => {
+    controllerRef.current?.abort();
+  }, []);
+
+  return { start, abort };
+}
+
+/**
+ * Owns the date-guessing chat with the AI agent: fetches the opening greeting
+ * on mount, then sends the whole transcript back with each reply and reports
+ * the confirmed date guess via onResult.
+ *
+ * The transcript lives here rather than on the server, so the conversation
+ * belongs to the browser holding it and survives server restarts, redeploys
+ * and requests landing on different instances.
+ *
+ * Superseded or abandoned requests are aborted.
+ */
+export function useChatSession(onResult: (date: string) => void) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { start, abort } = useLatestRequest();
+
+  const handleFailure = useCallback(
+    (controller: AbortController, message: string, err: unknown) => {
+      if (controller.signal.aborted) {
+        // The session is gone, or a newer request has taken over and owns the
+        // loading state.
+        return;
+      }
+      console.error("Fetch error:", err);
+      setLoading(false);
+      setError(message);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const controller = start();
+
+    const greet = async () => {
       try {
-        const res = await fetch("/api/guess", { signal: controller.signal });
-
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        if (!res.ok) {
-          // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
-          throw new Error(`Server error: ${res.status}`);
-        }
-
-        const data = await res.json();
+        const { assistant } = await openConversation(controller.signal);
         setLoading(false);
-        setSessionId(data.sessionId);
-        setMessages([{ role: "AI", text: data.assistant }]);
+        setMessages([{ role: "AI", text: assistant }]);
       } catch (err: unknown) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          return;
-        } else {
-          console.error("Fetch error:", err);
-        }
+        handleFailure(controller, GREETING_FAILED, err);
       }
     };
 
-    void startGame();
-  }, []);
+    void greet();
 
-  useEffect(() => {
     // Abort any in-flight request if the session is abandoned (e.g. the
     // dialog is closed before the AI responds).
-    return () => {
-      controllerRef.current?.abort();
-    };
-  }, []);
+    return abort;
+  }, [abort, handleFailure, start]);
 
   const sendMessage = useCallback(
     async (text: string) => {
-      if (!sessionId || !text.trim()) {
+      const trimmed = text.trim();
+
+      if (!trimmed || messages.length === 0) {
         return;
       }
 
-      setLoading(true);
-      setMessages((msgs) => [...msgs, { role: "You", text }]);
+      // The reply the server needs to see includes the message being sent, so
+      // build the next transcript up front and render from the same value.
+      const nextMessages: ChatMessage[] = [
+        ...messages,
+        { role: "You", text: trimmed },
+      ];
 
-      controllerRef.current?.abort("user restarted");
-      const controller = new AbortController();
-      controllerRef.current = controller;
+      setMessages(nextMessages);
+      setError(null);
+      setLoading(true);
+
+      const controller = start();
 
       try {
-        const res = await fetch("/api/guess", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId, userMessage: text }),
-          signal: controller.signal,
-        });
+        const { assistant, confirmedGuess } = await continueConversation(
+          nextMessages,
+          controller.signal,
+        );
 
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        if (!res.ok) {
-          // Handle 4xx/5xx errors explicitly — prevents Next from flagging it as unhandled
-          throw new Error(`Server error: ${res.status}`);
-        }
-
-        const data = await res.json();
         setLoading(false);
-        setMessages((msgs) => [...msgs, { role: "AI", text: data.assistant }]);
+        setMessages([...nextMessages, { role: "AI", text: assistant }]);
 
-        if (data.assistant.toLowerCase().includes("success")) {
-          onResult(data.confirmedGuess);
+        if (confirmedGuess) {
+          onResult(confirmedGuess);
         }
       } catch (err: unknown) {
-        if (err instanceof DOMException && err.name === "AbortError") {
-          return;
-        } else {
-          console.error("Fetch error:", err);
-        }
+        handleFailure(controller, REPLY_FAILED, err);
       }
     },
-    [sessionId, onResult],
+    [handleFailure, messages, onResult, start],
   );
 
-  return { sessionId, messages, loading, sendMessage };
+  return { messages, loading, error, ready: messages.length > 0, sendMessage };
 }

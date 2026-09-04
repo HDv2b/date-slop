@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/hooks/useChatSession";
+import { ChatMessage } from "@/types/chat";
 
 const ChatBubble = ({ message }: { message: ChatMessage }) => {
   if (message.role === "AI") {
