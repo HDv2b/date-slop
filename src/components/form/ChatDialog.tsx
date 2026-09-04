@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ChatBubble from "@/components/form/ChatBubble";
 import DialogCloseButton from "@/components/ui/DialogCloseButton";
 import Image from "next/image";
@@ -19,6 +19,13 @@ const ChatDialog = ({
 
   const dialogRef = useNativeDialog<HTMLDialogElement>();
   useVisualViewportResize(dialogRef);
+
+  // React's `autoFocus` runs at commit time, while the dialog is still closed
+  // and unfocusable. showModal() then focuses the first focusable descendant,
+  // which is the close button, so we claim focus once the dialog is open.
+  useEffect(() => {
+    chatInputRef.current?.focus();
+  }, []);
 
   const { sessionId, messages, loading, sendMessage } =
     useChatSession(onResult);
@@ -83,7 +90,6 @@ const ChatDialog = ({
               className="rounded-s-gray-100 z-20 my-[1px] -mr-[2px] block grow rounded-s-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
               placeholder="Reply"
               required
-              autoFocus
             />
             <button
               type="button"
