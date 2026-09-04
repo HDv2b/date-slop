@@ -22,10 +22,7 @@ const EndDialog = ({
       ref={dialogRef}
       className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
     >
-      <DialogCloseButton
-        onClick={onClose}
-        className="absolute top-1 right-1 rounded-xl bg-red-700 px-3 py-0.5 text-xl font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300 focus:outline-none"
-      />
+      <DialogCloseButton onClick={onClose} />
       <form onSubmit={onSubmit} className="p-6 text-center">
         <h1 className="text-3xl">
           Thank you for your participation,{" "}
