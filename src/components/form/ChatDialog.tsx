@@ -24,7 +24,7 @@ const ChatDialog = ({
     useChatSession(onResult);
   const { containerRef: chatRef, bottomRef } = useAutoScrollToBottom(messages);
 
-  const handleDialogSubmit = (event: React.FormEvent) => {
+  const handleDialogSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendUserMessage();
   };

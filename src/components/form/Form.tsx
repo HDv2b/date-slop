@@ -38,7 +38,7 @@ const Form = () => {
     setGameInProgress(false);
   };
 
-  const hijackDatePicker = (event: React.FormEvent) => {
+  const hijackDatePicker = (event: React.SyntheticEvent) => {
     event.preventDefault();
     event.stopPropagation();
     if (!gameInProgress) {

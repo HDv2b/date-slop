@@ -25,7 +25,7 @@ const DateOfBirthField = ({
 }: {
   hasError: boolean;
   errorMessage: string;
-  onHijack: (event: React.FormEvent) => void;
+  onHijack: (event: React.SyntheticEvent) => void;
   registration: UseFormRegisterReturn;
 }) => (
   <>
