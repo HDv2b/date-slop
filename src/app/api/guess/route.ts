@@ -1,26 +1,8 @@
-/*
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const response = await openai.responses.create({
-  prompt: {
-    "id": "pmpt_68fa80da169c819395b5655fcc527c99061156fc3311f692",
-    "version": "2"
-  }
-});
- */
-
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions/completions";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const sessions = new Map<
-  string,
-  { messages: { role: string; content: string }[] }
->();
+const sessions = new Map<string, { messages: ChatCompletionMessageParam[] }>();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -69,7 +51,6 @@ export async function GET() {
   const assistantMsg = resp.choices[0].message.content.trim();
   messages.push({ role: "assistant", content: assistantMsg });
 
-  // @ts-expect-error - this works
   sessions.set(sessionId, { messages });
 
   return NextResponse.json({ sessionId, assistant: assistantMsg });
@@ -92,7 +73,6 @@ export async function POST(req: Request) {
 
   const resp = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    // @ts-expect-error - this works
     messages: session.messages,
   });
 

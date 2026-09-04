@@ -14,7 +14,7 @@ The result is intentionally frustrating.
 
 ## 💡 Why I built it
 
-The idea came to me to parody the way that the modern web is littered with AI chat agents which insist on making tasks more difficult. 
+The idea came to me to parody the way that the modern web is littered with AI chat agents which insist on making tasks more difficult.
 
 The interesting part was finding the balance between **bad UX and unusable UX**.
 
@@ -22,12 +22,12 @@ Making the interaction annoying was easy. Making it annoying enough to be funny,
 
 The AI needed to:
 
-* ask questions that could genuinely narrow down a date;
-* understand indirect clues based on history, culture, technology and personal context;
-* reject attempts to simply provide the date directly;
-* make enough mistakes to support the joke without becoming completely incoherent;
-* recognise when it had enough information to make a final guess;
-* return control to the conventional form once it had decided on a date.
+- ask questions that could genuinely narrow down a date;
+- understand indirect clues based on history, culture, technology and personal context;
+- reject attempts to simply provide the date directly;
+- make enough mistakes to support the joke without becoming completely incoherent;
+- recognise when it had enough information to make a final guess;
+- return control to the conventional form once it had decided on a date.
 
 Much of the work therefore involved experimenting with the model's instructions and interaction flow to constrain a probabilistic system into a deliberately awkward — but still playable — experience.
 
@@ -43,12 +43,12 @@ Much of the work therefore involved experimenting with the model's instructions 
 
 ## 🛠️ Tech
 
-* **Next.js 16**
-* **React 19**
-* **TypeScript**
-* **OpenAI API**
-* **React Hook Form**
-* **Tailwind CSS**
+- **Next.js 16**
+- **React 19**
+- **TypeScript**
+- **OpenAI API**
+- **React Hook Form**
+- **Tailwind CSS**
 
 ## 🎮 How to play
 

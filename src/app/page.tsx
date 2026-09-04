@@ -1,4 +1,5 @@
-import Form from "@/libs/form/Form";
+import Form from "@/components/form/Form";
+import GitHubIcon from "@/components/ui/GitHubIcon";
 
 export default function Home() {
   return (
@@ -16,13 +17,7 @@ export default function Home() {
           aria-label="View project on GitHub"
           className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
         >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            className="h-5 w-5 fill-current"
-          >
-            <path d="M12 2C6.477 2 2 6.58 2 12.218c0 4.512 2.865 8.34 6.839 9.694.5.093.683-.218.683-.484 0-.236-.009-1.024-.014-1.86-2.782.607-3.369-1.342-3.369-1.342-.455-1.16-1.11-1.468-1.11-1.468-.908-.622.069-.61.069-.61 1.004.071 1.533 1.033 1.533 1.033.892 1.53 2.341 1.088 2.91.833.091-.648.349-1.089.635-1.338-2.221-.253-4.555-1.113-4.555-4.955 0-1.094.39-1.989 1.029-2.689-.103-.253-.446-1.275.098-2.656 0 0 .84-.269 2.75 1.026A9.57 9.57 0 0 1 12 6.844c.85.004 1.705.115 2.505.338 1.909-1.295 2.748-1.026 2.748-1.026.546 1.381.203 2.403.1 2.656.64.7 1.028 1.595 1.028 2.689 0 3.85-2.337 4.699-4.566 4.947.359.31.679.92.679 1.854 0 1.338-.012 2.416-.012 2.747 0 .27.18.58.688.481A10.02 10.02 0 0 0 22 12.218C22 6.58 17.523 2 12 2Z" />
-          </svg>
+          <GitHubIcon className="h-5 w-5 fill-current" />
           <span>HDv2b/date-slop</span>
         </a>
       </header>
@@ -40,23 +35,6 @@ export default function Home() {
         </div>
 
         <Form />
-
-        {/*            <a href="https://www.linkedin.com/in/husseinduvigneau/"
-               className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Linked In
-                <svg className="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
-                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                          d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
-            </a>
-            <a href="https://badux.lol/"
-               className="text-blue-600 dark:text-blue-500 hover:underline font-medium text-lg inline-flex items-center">Bad UX website with other people's entries
-                <svg className="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true"
-                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                          d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                </svg>
-            </a>*/}
       </main>
       <footer className="flex flex-col gap-2 p-8 text-sm">
         <div className="flex flex-wrap items-center gap-3">
@@ -84,13 +62,7 @@ export default function Home() {
               aria-label="HDv2b on GitHub"
               className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900"
             >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                className="h-4 w-4 fill-current"
-              >
-                <path d="M12 2C6.477 2 2 6.58 2 12.218c0 4.512 2.865 8.34 6.839 9.694.5.093.683-.218.683-.484 0-.236-.009-1.024-.014-1.86-2.782.607-3.369-1.342-3.369-1.342-.455-1.16-1.11-1.468-1.11-1.468-.908-.622.069-.61.069-.61 1.004.071 1.533 1.033 1.533 1.033.892 1.53 2.341 1.088 2.91.833.091-.648.349-1.089.635-1.338-2.221-.253-4.555-1.113-4.555-4.955 0-1.094.39-1.989 1.029-2.689-.103-.253-.446-1.275.098-2.656 0 0 .84-.269 2.75 1.026A9.57 9.57 0 0 1 12 6.844c.85.004 1.705.115 2.505.338 1.909-1.295 2.748-1.026 2.748-1.026.546 1.381.203 2.403.1 2.656.64.7 1.028 1.595 1.028 2.689 0 3.85-2.337 4.699-4.566 4.947.359.31.679.92.679 1.854 0 1.338-.012 2.416-.012 2.747 0 .27.18.58.688.481A10.02 10.02 0 0 0 22 12.218C22 6.58 17.523 2 12 2Z" />
-              </svg>
+              <GitHubIcon className="h-4 w-4 fill-current" />
               <span>HDv2b</span>
             </a>
             <a

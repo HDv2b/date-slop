@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
-import KeepAlive from "@/libs/KeepAlive";
+import KeepAlive from "@/components/KeepAlive";
 import type { Metadata } from "next";
 
 const geistSans = Geist({
