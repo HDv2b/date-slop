@@ -1,34 +1,31 @@
 "use client";
 
-import { continueConversation, openConversation } from "@/lib/guessApi";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  RateLimitError,
+  continueConversation,
+  openConversation,
+} from "@/lib/guessApi";
+import { useCallback, useEffect, useState } from "react";
 
 import { ChatMessage } from "@/types/chat";
+import { useLatestRequest } from "@/hooks/useLatestRequest";
 
 const GREETING_FAILED =
   "The agent could not be reached. Close this and try again.";
 const REPLY_FAILED = "The agent did not reply. Try sending that again.";
 
-/**
- * Hands out an AbortController for the newest request, aborting whichever one
- * it supersedes, and an abort for when the session is abandoned.
- */
-function useLatestRequest() {
-  const controllerRef = useRef<AbortController | null>(null);
+const plural = (n: number, unit: string) => `${n} ${unit}${n === 1 ? "" : "s"}`;
 
-  const start = useCallback(() => {
-    controllerRef.current?.abort();
-    const controller = new AbortController();
-    controllerRef.current = controller;
-    return controller;
-  }, []);
+/** A rate-limit window can run to several minutes, so don't quote raw seconds. */
+const formatWait = (seconds: number) =>
+  seconds < 60
+    ? plural(seconds, "second")
+    : plural(Math.ceil(seconds / 60), "minute");
 
-  const abort = useCallback(() => {
-    controllerRef.current?.abort();
-  }, []);
-
-  return { start, abort };
-}
+const rateLimited = (retryAfterSeconds: number | null) =>
+  retryAfterSeconds
+    ? `Too many messages. Try again in ${formatWait(retryAfterSeconds)}.`
+    : "Too many messages. Give it a moment, then try again.";
 
 /**
  * Owns the date-guessing chat with the AI agent: fetches the opening greeting
@@ -54,8 +51,17 @@ export function useChatSession(onResult: (date: string) => void) {
         // loading state.
         return;
       }
-      console.error("Fetch error:", err);
+
       setLoading(false);
+
+      // Being throttled is expected behaviour rather than a fault, so it gets
+      // its own advice and stays out of the error log.
+      if (err instanceof RateLimitError) {
+        setError(rateLimited(err.retryAfterSeconds));
+        return;
+      }
+
+      console.error("Fetch error:", err);
       setError(message);
     },
     [],
