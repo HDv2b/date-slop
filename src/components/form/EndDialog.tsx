@@ -20,7 +20,7 @@ const EndDialog = ({
   return (
     <dialog
       ref={dialogRef}
-      className="wrap-none fixed top-1/2 left-1/2 h-fit w-[40vh] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl"
+      className="wrap-none fixed top-1/2 left-1/2 h-fit w-[90vw] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl sm:w-[80vw]"
     >
       <DialogCloseButton onClick={onClose} />
       <form onSubmit={onSubmit} className="p-6 text-center">
