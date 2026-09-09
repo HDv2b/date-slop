@@ -36,7 +36,7 @@ export default function Home() {
 
         <Form />
       </main>
-      <footer className="flex flex-col gap-2 p-8 text-sm">
+      <footer className="flex w-full max-w-3xl flex-col gap-2 p-8 text-sm">
         <div className="flex flex-wrap items-center gap-3">
           <p className="m-0 leading-none">
             This is a parody demo built by{" "}
@@ -52,6 +52,18 @@ export default function Home() {
               className="0 inline-flex items-center text-blue-600 hover:underline"
             >
               Bad UX World Cup
+            </a>
+            .
+          </p>
+          <p className="m-0 leading-none">
+            Read the write-up:{" "}
+            <a
+              href="https://dev.to/hdv/date-slop-building-a-deliberately-bad-ux-with-ai-3nml"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center text-blue-600 hover:underline"
+            >
+              Date Slop: Building a deliberately bad UX with AI
             </a>
             .
           </p>
