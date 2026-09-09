@@ -4,42 +4,47 @@ An AI-powered date picker that makes entering your date of birth unnecessarily d
 
 **[Try the live demo](https://date-slop.hdv.dev)**
 
-![Date Slop screenshot](./docs/screenshot-2a.png)
+![Date Slop in action](./docs/date-slop-80.webp)
 
-Date Slop was built as an entry for the **Bad UX World Cup**. Instead of letting you simply enter your date of birth, the date field is hijacked by an AI assistant that insists on working it out for you.
+Date Slop was built as an entry for the **Bad UX World Cup**. I had the idea to parody how the modern web is littered with AI chat assistants which insist on making tasks more difficult. Instead of letting you simply enter your date of birth, the date field is hijacked by an AI assistant that insists on working it out for you, only it's not very good at it.
 
-It asks questions. You give it clues. It makes guesses. Eventually, if all goes well, it figures out your birthday and fills in the field itself.
-
-The result is intentionally frustrating.
-
-## 💡 Why I built it
-
-The idea came to me to parody the way that the modern web is littered with AI chat agents which insist on making tasks more difficult.
-
-The interesting part was finding the balance between **bad UX and unusable UX**.
-
-Making the interaction annoying was easy. Making it annoying enough to be funny, while still giving users a realistic chance of reaching the end, required considerably more iteration.
+The challenge was finding the balance between **bad UX and unusable UX**. I wanted the AI to be bad enough to frustrate the user in an amusing way, without having that user give up completely and abandon the game.
 
 The AI needed to:
 
-- ask questions that could genuinely narrow down a date;
-- understand indirect clues based on history, culture, technology and personal context;
-- reject attempts to simply provide the date directly;
-- make enough mistakes to support the joke without becoming completely incoherent;
-- recognise when it had enough information to make a final guess;
+- ask questions that could genuinely narrow down a date,
+- understand indirect clues based on history, culture, technology and personal context,
+- reject attempts to simply provide the date directly,
+- make enough mistakes to support the joke without becoming completely incoherent,
+- recognise when it had enough information to make a final guess,
 - return control to the conventional form once it had decided on a date.
 
-Much of the work therefore involved experimenting with the model's instructions and interaction flow to constrain a probabilistic system into a deliberately awkward — but still playable — experience.
+The original competition website is no longer online, but the [judging session is still available on YouTube](https://www.youtube.com/watch?v=PGpwoWGXBK0); you can see there was some tough competition.
 
-## ⚙️ How it works
+Date Slop didn’t make the finals, apparently the UX wasn’t bad enough!
 
-1. The user fills in the ordinary parts of the form.
-2. Clicking the date-of-birth field opens the AI interface instead of a normal date picker.
-3. The assistant asks questions intended to determine the user's birth date.
-4. The user responds with indirect clues rather than simply typing the date.
-5. If the user tries to give the date directly, the assistant rejects it and asks another question.
-6. The conversation continues until the assistant believes it can identify a specific date.
-7. Its final guess is written back into the original form.
+## 📝 Building it and lessons learned
+
+This was my first AI-powered application and my first time using the OpenAI API. The main lessons were:
+
+- **Give the model actions to follow.** Repeated prompt refinement helped, especially specifying how to respond when users break the rules instead of only telling it what not to do.
+- **Prepare for cold starts.** Fetching the opening question in the background helps the conversation start sooner, with loading feedback when it takes longer.
+- **Don't rely on server memory for conversation history.** Serverless instances can disappear mid-conversation. Moving the transcript to client-side state and sending it with each request solved this, while trusted instructions stayed on the server.
+- **Bound costs and handle failures.** Rate limiting, billing controls, conversation limits and response token limits help contain abuse and unexpected costs. The UI also needs to explain when those protections interrupt a conversation.
+
+The main takeaway: calling an AI API is only one part of building a usable feature. State management, reliability and failure handling still need ordinary software engineering, even when the UX is deliberately bad!
+
+Read the full story: [Date Slop: building a deliberately bad UX with AI](https://dev.to/hdv/date-slop-building-a-deliberately-bad-ux-with-ai-3nml).
+
+## 🎮 How to play
+
+1. Open the [live demo](https://date-slop.hdv.dev).
+2. Fill in your name and location.
+3. Click the date-of-birth field.
+4. Answer the assistant's questions using clues rather than explicit dates.
+5. Keep going until it guesses your date of birth, then confirm the answer to fill in the field.
+
+Trying to give it your date of birth directly won’t help — the assistant will reject it and keep asking questions.
 
 ## 🛠️ Tech
 
@@ -49,26 +54,6 @@ Much of the work therefore involved experimenting with the model's instructions 
 - **OpenAI API**
 - **React Hook Form**
 - **Tailwind CSS**
-
-## 🎮 How to play
-
-1. Open the [live demo](https://date-slop.hdv.dev).
-2. Fill in your name and location.
-3. Click the date-of-birth field.
-4. Answer the assistant's questions using clues rather than explicit dates.
-5. Keep going until it finally works out your birthday.
-
-Trying to give it your date of birth directly won’t help — the assistant will reject it and keep asking questions.
-
-## 🏆 Competition context
-
-Date Slop was created for the **Bad UX World Cup**, a competition built around deliberately terrible user experiences.
-
-The original competition website is no longer online, but the judging session has been preserved on YouTube:
-
-**[Watch the Bad UX World Cup judging video](https://www.youtube.com/watch?v=PGpwoWGXBK0)**
-
-Date Slop didn’t make the finals — apparently the UX wasn’t bad enough.
 
 ## 🚀 Running locally
 
@@ -88,19 +73,17 @@ Create a `.env.local` file in the project root:
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
+Keep this key private and do not commit it to source control.
+
 ### 3. Start the development server
 
 ```bash
 pnpm dev
 ```
 
-Then open:
+Then open [http://localhost:3000](http://localhost:3000).
 
-```text
-http://localhost:3000
-```
-
-## Production
+### Production build
 
 Build and run the application with:
 
@@ -109,6 +92,4 @@ pnpm build
 pnpm start
 ```
 
-The `OPENAI_API_KEY` must be supplied as a server-side environment variable in the production environment.
-
-⚠️ Reminder: Do not commit API keys to source control.
+When deploying, supply `OPENAI_API_KEY` as a server-side environment variable.
