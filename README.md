@@ -104,3 +104,14 @@ pnpm test:e2e
 ```
 
 The E2E tests mock the guess API and do not require an OpenAI API key.
+
+### E2E tests
+
+Install the Playwright Chromium binary once, then run the smoke tests:
+
+```bash
+pnpm exec playwright install chromium
+pnpm test:e2e
+```
+
+The E2E tests mock the guess API and do not require an OpenAI API key.
