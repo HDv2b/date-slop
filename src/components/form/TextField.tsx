@@ -35,6 +35,7 @@ const TextField = ({
     </label>
     <input
       {...registration}
+      id={id}
       className={hasError ? styles.input.error : styles.input.ok}
     />
     {hasError && (
